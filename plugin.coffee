@@ -3,6 +3,7 @@ path = require 'path'
 async = require 'async'
 util = require 'util'
 jade = require 'jade'
+underscore = require 'underscore'
 
 module.exports = (wintersmith, callback) ->
 
@@ -14,14 +15,32 @@ module.exports = (wintersmith, callback) ->
       @_filename.replace /jade$/, 'html'
 
     getHtml: (base='/') ->
+      # all we want to do here, is to render the body
       options =
-        locals: @_metadata
-      fn = jade.compile @_text, @_metadata
-      fn @
+        filename: path.join @_base, @_filename
+        pretty: true
+
+      htmlFn = jade.compile @_text, options
+      htmlFn @_metadata
 
     render: (locals, contents, templates, callback) ->
-      # do something with the text!
-      callback null, new Buffer @html
+
+      if @template == 'none'
+        return callback null, null
+
+      template = templates[@template]
+      if not template?
+        callback new Error "page '#{ @filename}' specifies unknown template '#{ @template }'"
+      else
+        ctx =
+          page: @
+          contents: contents
+          _: underscore
+
+        for name, method of locals
+          ctx[name] = method
+
+        template.render ctx, callback
 
     @property 'metadata', ->
       @_metadata
@@ -33,7 +52,7 @@ module.exports = (wintersmith, callback) ->
       @getHtml()
 
     @property 'title', ->
-      @_metadata.tile or 'Untiltled'
+      @_metadata.title or 'Untiltled'
 
     @property 'date', ->
       new Date(@_metadata.date or 0)
