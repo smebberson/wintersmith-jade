@@ -75,7 +75,7 @@ module.exports = (wintersmith, callback) ->
         {text, metadata} = result
         callback null, new JadePlugin filename, base, text, metadata
 
-  wintersmith.registerContentPlugin 'jade', '**/*.jade', JadePlugin
+  wintersmith.registerContentPlugin 'pages', '**/*.jade', JadePlugin
   callback() # tell the plugin manager we are done
 
 extractMetadata = (content) ->
