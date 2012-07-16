@@ -82,7 +82,7 @@ extractMetadata = (content) ->
   a = content.split '\n\n'
   metadata:
     parseMetadata a[0]
-  text: a[1]
+  text: a[1..a.length].join('\n\n')
 
 parseMetadata = (content) ->
   lines = content.split '\n'
