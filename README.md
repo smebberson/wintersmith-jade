@@ -9,10 +9,12 @@ Create a `.jade` file in your content directory. Wintersmith would usually ignor
 
 To provide Wintersmith with metadata, use the following as a formatting example.
 
+	---
 	title = 'Title'
 	subtitle = 'Subtitle'
 	date = '2013/10/12'
 	teaser = 'Here is a sample teaser.'
 	template = 'standard.jade'
-
+	---
+	
 	p Content here.
