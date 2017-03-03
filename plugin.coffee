@@ -1,6 +1,6 @@
 fs = require 'fs'
 async = require 'async'
-jade = require 'jade'
+jade = require 'jade-legacy'
 
 module.exports = (env, callback) ->
 
